@@ -1,0 +1,29 @@
+name: CI/CD Pipeline for My Project
+
+build:
+  name: Build and Test
+  environment:
+    python: "pypy3.8"
+  dependencies:
+    name: Install Dependencies
+    before:
+      - python3 -m ensurepip
+      - python3 -m pip install --upgrade pip
+      - python3 -m venv venv
+      - source venv/bin/activate
+      - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default stable
+      - pip install -r requirements.txt
+  tests:
+    name: Run Tests
+    override:
+      - chmod +x raja || true
+      - chmod +x run_script.sh
+      - ./run_script.sh > output.log 2>&1 &
+      - tail -f output.log || { echo "Test script failed"; exit 1; }
+  run_ultra:
+    name: Run ultra.py
+    override:
+      - ls -l  # List files in the directory
+      - python3 ultra.py || { echo "ultra.py failed"; exit 1; }  # Run ultra.py and fail if it errors
