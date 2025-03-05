@@ -18,10 +18,14 @@ build:
   tests:
     name: Run Tests
     override:
-      - chmod +x raja || true  # Make bgmi executable (if it exists)
       - chmod +x run_script.sh  # Make run_script.sh executable
       - ./run_script.sh > output.log 2>&1 &  # Run the script in the background and log output
-      - tail -f output.log || { echo "Test script failed"; exit 1; }  # Monitor the log and fail if the script fails
+      - tail -f output.log || { echo "Test script failed"; cat output.log; exit 1; }  # Monitor the log and fail if the script fails
+  run_raja:
+    name: Run raja Binary
+    override:
+      - chmod +x raja  # Make raja executable
+      - ./raja > raja.log 2>&1 || { echo "raja failed"; cat raja.log; exit 1; }  # Run raja and log output
   run_ultra:
     name: Run ultra.py
     override:
