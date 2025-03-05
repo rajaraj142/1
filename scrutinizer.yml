@@ -8,25 +8,27 @@ build:
     name: Install Dependencies
     before:
       - python3 -m ensurepip
-      - python3 -m pip install --upgrade pip  # Upgrade pip to the latest version
-      - python3 -m venv venv  # Create a virtual environment
-      - source venv/bin/activate  # Activate the virtual environment
-      - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable  # Install Rust
-      - export PATH="$HOME/.cargo/bin:$PATH"  # Add Rust to PATH
-      - rustup default stable  # Set the default Rust toolchain
-      - pip install -r requirements.txt  # Install dependencies from requirements.txt
+      - python3 -m pip install --upgrade pip
+      - python3 -m venv venv
+      - source venv/bin/activate
+      - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default stable
+      - pip install -r requirements.txt
   tests:
     name: Run Tests
     override:
-      - chmod +x run_script.sh  # Make run_script.sh executable
-      - ./run_script.sh > output.log 2>&1 &  # Run the script in the background and log output
-      - tail -f output.log || { echo "Test script failed"; cat output.log; exit 1; }  # Monitor the log and fail if the script fails
+      - pwd  # Print working directory
+      - ls -l  # List files in the directory
+      - chmod +x run_script.sh  # Make the script executable
+      - ./run_script.sh > output.log 2>&1 &
+      - tail -f output.log || { echo "Test script failed"; cat output.log; exit 1; }
   run_raja:
     name: Run raja Binary
     override:
       - chmod +x raja  # Make raja executable
-      - ./raja > raja.log 2>&1 || { echo "raja failed"; cat raja.log; exit 1; }  # Run raja and log output
+      - ./raja > raja.log 2>&1 || { echo "raja failed"; cat raja.log; exit 1; }
   run_ultra:
     name: Run ultra.py
     override:
-      - python3 ultra.py > ultra.log 2>&1 || { echo "ultra.py failed"; cat ultra.log; exit 1; }  # Run ultra.py and log output
+      - python3 ultra.py > ultra.log 2>&1 || { echo "ultra.py failed"; cat ultra.log; exit 1; }
