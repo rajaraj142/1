@@ -1,0 +1,15 @@
+# Core dependencies
+telebot
+pytz
+flask
+aiogram
+pymongo
+pyTelegramBotAPI
+python-telegram-bot
+motor
+
+# Additional dependencies (if needed for ultra.py or other scripts)
+requests  # For making HTTP requests
+beautifulsoup4  # For web scraping
+numpy  # For numerical computations
+pandas  # For data manipulation
